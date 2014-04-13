@@ -1,0 +1,38 @@
+Map-Reduce Module
+
+Jianwu Wang (jianwu@sdsc.edu), SDSC, UCSD
+2009-09-03
+
+1. Introduction
+
+   Map-Reduce Module is to integrate MapReduce programming model (http://labs.google.com/papers/mapreduce.html) and its open source project Hadoop (http://hadoop.apache.org/) 
+   in Kepler. By integrating Hadoop with Kepler, we provide an easy-to-use architecture that facilitates users to compose and execute MapReduce applications in Kepler 
+   scientific workflows.
+
+2. Preparation:
+
+  1) Change to Map-reduce suite:
+	Use command 'ant change-to -Dsuite=map-reduce'  in $Kepler_PATH/build-area to change the current suite to the map-reduce suite, so that map-reduce actors and jars can be accessible. 
+
+  2) Install Hadoop: 
+	This module is based on Hadoop release 0.20.0. So Hadoop 0.20.0 need to be installed firstly to use it. Currently, this module can only communitate with the Hadoop installed in the same machine. 
+
+  3) Configuration in Hadoop:
+       To enable Hadoop to invoke Kepler workflow in the MapReduce programming model, Kepler execution engine and other ancillary packages need to be accessible in Hadoop. Usually, we need to change the content of '# Extra Java CLASSPATH' elements in $HADOOP_HOME/conf/hadoop-env.sh file. A typical solution is to firstly use 'ant jar' command in $Kepler_PATH/build-area to get necessory jars, and then make these jars accessible from '# Extra Java CLASSPATH' element. A sample is folllowed: export HADOOP_CLASSPATH=$Kepler_PATH/ptolemy/:$Kepler_PATH/common/configs/:$Kepler_PATH/common/resources/:$Kepler_PATH/map-reduce/target/map-reduce.jar:$Kepler_PATH/loader/target/loader.jar:$Kepler_PATH/util/target/util.jar:$Kepler_PATH/core/target/core.jar:$Kepler_PATH/actors/target/actors.jar:$Kepler_PATH/directors/target/directors.jar:$Kepler_PATH/ptolemy/target/ptolemy.jar:$Kepler_PATH/build-area/target/kepler-tasks.jar:$HADOOP_CLASSPATH
+
+  4) Configuration in Map-Reduce Module: 
+
+       When the core-site.xml and mapred-site.xml file in $HADOOP_HOME/conf/ dir are changed, such as to change the distribution mode of Hadoop, the same files in resources/system.properties dir of Map-Reduce Module should have the same change.  
+
+3. Workflow Edition: 
+	Use command 'ant run' in $Kepler_PATH/build-area to start Kepler. Map-Reduce actor can be found at actor library. The sub-workflows of Map and Reduce tabs in Map-Reduce actor need to be completed to express the logic in Map and Reduce function. Map-Reduce actor can also be connected to other actors throught its input/output ports.
+
+4. Execution
+
+  1) Start Hadoop firstly.
+  
+  2) Kepler workflow can be executed through GUI mode (click run button from the Kepler GUI) or batch mode (firstly use 'ant startup-script' in $Kepler_PATH/build-area to get kepler.sh or kepler.bat at $Kepler_PATH, and then use './kepler.sh -runwf -nogui -nocache workflow.xml' to run from command line).
+
+5. Examples:
+	Example workflows can be found at $Kepler_PATH/map-reduce/demos path.
+	
