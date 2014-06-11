@@ -185,14 +185,10 @@
 - (NSString *)getFileType : (NSString *)filePath
 {
     NSString *type = @"unknow";
-    if (filePath != nil) {
-        if ([filePath componentsSeparatedByString:@"."].count != 2) {
-            return type;
-        }
-        else
-        {
-            NSArray *temp = [filePath componentsSeparatedByString:@"."];
-            type = [temp objectAtIndex:1];
+    if ([filePath length]>4) {
+        NSRange rag=[filePath rangeOfString:@"." options:NSBackwardsSearch];
+        if (rag.location!=NSNotFound) {
+            type = [filePath substringFromIndex:rag.location];
         }
     }
     return type;
